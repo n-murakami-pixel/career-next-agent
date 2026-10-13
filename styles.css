@@ -38,3 +38,26 @@ fieldset label{transition:background-color .2s ease,border-color .2s ease}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .hero-cta:hover,.hero-cta:focus-visible,.submit-button:hover,.submit-button:focus-visible,.nav-contact:hover,.nav-contact:focus-visible{transform:none}
 }
+
+/* External service stays distinct from this concept site's demo form. */
+.external-service{background:#f7f5ef;border-bottom:1px solid var(--line);padding:32px 0}
+.external-service-inner{display:flex;align-items:center;justify-content:space-between;gap:28px}
+.external-service .section-label{font-size:11px;margin-bottom:5px}
+.external-service h2{font-size:20px;letter-spacing:.02em}
+.external-service-note{font-size:12px;color:#626763;line-height:1.8;margin-top:7px;max-width:560px}
+.external-service-link{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-shrink:0;min-height:66px;padding:14px 22px;border:1px solid var(--accent);border-radius:6px;background:#fff;color:#973c28;font-size:15px;font-weight:700}
+.external-service-link small{display:block;font-size:11px;font-weight:400;margin-top:2px;color:#626763}
+.external-arrow{font-size:25px;line-height:1}
+.external-service-link:hover,.external-service-link:focus-visible{background:#fff1ea;box-shadow:0 6px 20px #292f2c12}
+@media(prefers-reduced-motion:no-preference){
+  .external-service-link{transition:background-color .22s ease,box-shadow .22s ease,transform .22s ease}
+  .external-arrow{transition:transform .22s ease}
+  .external-service-link:hover,.external-service-link:focus-visible{transform:translateY(-2px)}
+  .external-service-link:hover .external-arrow,.external-service-link:focus-visible .external-arrow{transform:translate(3px,-3px)}
+}
+@media(max-width:720px){
+  .external-service{padding:26px 0}
+  .external-service-inner{flex-direction:column;align-items:stretch;gap:18px}
+  .external-service h2{font-size:18px}
+  .external-service-link{font-size:14px;padding:14px 16px;flex-shrink:1}
+}

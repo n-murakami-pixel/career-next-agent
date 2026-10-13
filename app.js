@@ -48,7 +48,7 @@ dialog.addEventListener('click', e => {
 // Animate only when a section enters view; no hidden CSS state to get stuck in.
 // Unsupported APIs or disabled JavaScript leave the complete page readable.
 const revealTargets = [...document.querySelectorAll(
-  '.intro>div, .section-heading, .step, .reason-grid>article, .recommend-inner>div, .check-list>li, .faq-list>details, .contact-copy, .consult-form'
+  '.external-service-inner, .intro>div, .section-heading, .step, .reason-grid>article, .recommend-inner>div, .check-list>li, .faq-list>details, .contact-copy, .consult-form'
 )];
 const activeReveals = new Map();
 let revealObserver;
