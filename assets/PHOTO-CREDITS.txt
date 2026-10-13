@@ -1,0 +1,22 @@
+Career Next hero slideshow image sources
+Verified: 2026-10-13
+
+hero.jpg: Existing image supplied in the user-approved original site ZIP; retained unchanged.
+
+hero-team.jpg
+Photographer: Christina @ wocintechchat.com M
+Title: three women sitting at the table
+Source: https://unsplash.com/photos/three-women-sitting-at-the-table-vzfgh3RAPzM
+Image: https://images.unsplash.com/photo-1573496130407-57329f01f769?auto=format&fit=crop&w=1600&q=82
+
+hero-consultation.jpg
+Photographer: Christina @ wocintechchat.com M
+Title: two women sitting at table looking at talking woman
+Source: https://unsplash.com/photos/two-women-sitting-at-table-looking-at-talking-woman-DcHbAegafZg
+Image: https://images.unsplash.com/photo-1573167691330-597fd91bc6c7?auto=format&fit=crop&w=1600&q=82
+
+Both added images: Unsplash License, https://unsplash.com/license
+The source pages identify both images as free under the Unsplash License.
+Downloaded at 1600px width, JPEG quality 82; displayed with responsive object-fit cropping.
+Stock photographs are illustrative; the people shown are not represented as staff or endorsers.
+No photographs were copied from ensession.jp.

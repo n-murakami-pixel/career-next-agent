@@ -16,7 +16,7 @@ fieldset label{transition:background-color .2s ease,border-color .2s ease}
 .floating-cta.visible{visibility:visible}
 .floating-cta:hover,.floating-cta:focus-visible{background:#b6432b}
 @media(prefers-reduced-motion:no-preference){
-  .hero.hero-motion-running .hero-photo{animation:hero-photo-enter 4.8s cubic-bezier(.2,.65,.25,1) both}
+  .hero.hero-motion-running .hero-slide:first-child .hero-photo{animation:hero-photo-enter 4.8s cubic-bezier(.2,.65,.25,1) both}
   .hero.hero-motion-running .hero-copy>*{animation:hero-copy-enter 1.2s cubic-bezier(.22,1,.36,1) backwards}
   .hero.hero-motion-running .hero-copy>.eyebrow{animation-delay:.2s}
   .hero.hero-motion-running .hero-copy>.hero-intro{animation-delay:.5s}
@@ -61,4 +61,29 @@ fieldset label{transition:background-color .2s ease,border-color .2s ease}
   .external-service-inner{flex-direction:column;align-items:stretch;gap:18px}
   .external-service h2{font-size:18px}
   .external-service-link{font-size:14px;padding:14px 16px;flex-shrink:1}
+}
+
+/* Only the photographs move; the copy, shade, CTA and controls stay stationary. */
+.hero-slides,.hero-slide{position:absolute;inset:0}
+.hero-slides{overflow:hidden}
+.hero-slide{visibility:hidden}
+.hero-slide.is-active,.hero-slide.is-leaving{visibility:visible}
+.hero-slide .hero-photo{inset:0}
+.hero-slide:nth-child(2) .hero-photo{object-position:62% 45%}
+.hero-slide:nth-child(3) .hero-photo{object-position:50% 42%}
+.hero-shade{pointer-events:none;background:linear-gradient(90deg,#14251fdb 0%,#14251f94 45%,#14251f20 100%),linear-gradient(0deg,#14251f70,transparent 50%)}
+.hero-controls{position:absolute;right:4.5%;bottom:76px;z-index:4;display:flex;align-items:center;gap:7px;background:#15251ee6;border:1px solid #ffffff50;border-radius:30px;padding:5px 10px;color:#fff}
+.hero-controls[hidden]{display:none}
+.hero-controls button{background:transparent;color:inherit;border:0;min-width:44px;min-height:44px;border-radius:22px;padding:8px;font-size:16px;line-height:1.4}
+.hero-controls button:hover,.hero-controls button:focus-visible{background:#ffffff26}
+.hero-controls button:focus-visible{outline:3px solid white;outline-offset:2px}
+.hero-controls button:disabled{opacity:.6;cursor:default}
+.hero-controls .hero-play{font-size:12px;min-width:86px;border-left:1px solid #ffffff40;border-radius:0 20px 20px 0}
+.hero-position{font:13px/1.4 Arial,sans-serif;min-width:40px;text-align:center;font-variant-numeric:tabular-nums}
+@media(max-width:720px){
+ .hero-controls{right:6%;bottom:66px;padding:3px 7px;gap:2px}
+ .hero-slide:nth-child(2) .hero-photo{object-position:67% center}
+ .hero-slide:nth-child(3) .hero-photo{object-position:40% center}
+ .hero-shade{background:linear-gradient(90deg,#14251f90,#14251f20),linear-gradient(0deg,#14251ff0 0%,#14251f99 55%,#14251f20)}
+ .hero{height:860px;min-height:860px}
 }
