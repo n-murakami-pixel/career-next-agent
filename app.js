@@ -88,3 +88,49 @@ function respectMotionChange() {
 }
 if (motionPreference.addEventListener) motionPreference.addEventListener('change', respectMotionChange);
 else if (motionPreference.addListener) motionPreference.addListener(respectMotionChange);
+
+// Start the first-view sequence only after the photo is ready and the tab is visible.
+// Without JavaScript, motion support, or a loaded photo, all content remains readable.
+(() => {
+  const hero = document.querySelector('.hero');
+  const photo = document.querySelector('.hero-photo');
+  if (!hero || !photo || motionPreference.matches) return;
+  let started = false;
+  let ready = false;
+  let framePending = false;
+  function startWhenVisible() {
+    if (!ready || started || framePending || document.visibilityState !== 'visible') return;
+    framePending = true;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      framePending = false;
+      if (started || document.visibilityState !== 'visible') return;
+      started = true;
+      document.removeEventListener('visibilitychange', startWhenVisible);
+      // Do not replay an entrance after restoring a scroll position or opening a deep link.
+      if (motionPreference.matches || window.scrollY > 100) return;
+      hero.classList.add('hero-motion-running');
+    }));
+  }
+  function photoReady() {
+    ready = true;
+    startWhenVisible();
+  }
+  document.addEventListener('visibilitychange', startWhenVisible);
+  if (typeof photo.decode === 'function') {
+    photo.decode().then(photoReady, photoReady);
+  } else if (photo.complete) {
+    photoReady();
+  } else {
+    photo.addEventListener('load', photoReady, { once: true });
+    photo.addEventListener('error', photoReady, { once: true });
+  }
+  function stopHeroMotion() {
+    if (motionPreference.matches) {
+      started = true;
+      hero.classList.remove('hero-motion-running');
+      document.removeEventListener('visibilitychange', startWhenVisible);
+    }
+  }
+  if (motionPreference.addEventListener) motionPreference.addEventListener('change', stopHeroMotion);
+  else if (motionPreference.addListener) motionPreference.addListener(stopHeroMotion);
+})();

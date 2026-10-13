@@ -16,20 +16,21 @@ fieldset label{transition:background-color .2s ease,border-color .2s ease}
 .floating-cta.visible{visibility:visible}
 .floating-cta:hover,.floating-cta:focus-visible{background:#b6432b}
 @media(prefers-reduced-motion:no-preference){
-  .hero-photo{animation:hero-photo-enter 1.8s cubic-bezier(.2,.65,.25,1) both}
-  .hero-copy>*{animation:hero-copy-enter .85s cubic-bezier(.22,1,.36,1) backwards}
-  .hero-copy>.eyebrow{animation-delay:.12s}
-  .hero-copy>.hero-intro{animation-delay:.2s}
-  .hero-copy>h1{animation-delay:.28s}
-  .hero-copy>.hero-sub{animation-delay:.4s}
-  .hero-copy>.hero-cta{animation-delay:.52s}
-  .hero-bottom{animation:hero-copy-enter .8s .65s backwards}
-  .scroll-line{transform-origin:top;animation:scroll-cue 1.6s 1s 2 ease-in-out}
+  .hero.hero-motion-running .hero-photo{animation:hero-photo-enter 4.8s cubic-bezier(.2,.65,.25,1) both}
+  .hero.hero-motion-running .hero-copy>*{animation:hero-copy-enter 1.2s cubic-bezier(.22,1,.36,1) backwards}
+  .hero.hero-motion-running .hero-copy>.eyebrow{animation-delay:.2s}
+  .hero.hero-motion-running .hero-copy>.hero-intro{animation-delay:.5s}
+  .hero.hero-motion-running .hero-copy>h1{animation-delay:.8s}
+  .hero.hero-motion-running .hero-copy>.hero-sub{animation-delay:1.25s}
+  .hero.hero-motion-running .hero-copy>.hero-cta{animation-delay:1.7s}
+  .hero.hero-motion-running .hero-bottom{animation:hero-copy-enter 1.2s 2s backwards}
+  .hero.hero-motion-running .scroll-line{transform-origin:top;animation:scroll-cue 1.6s 2.4s 2 ease-in-out}
+  .hero.hero-motion-running .hero-copy>*:focus-within{animation:none}
   .faq-list details[open]>p{animation:answer-enter .28s ease-out}
   dialog[open]{animation:answer-enter .22s ease-out}
   .form-result:not([hidden]){animation:answer-enter .3s ease-out}
-  @keyframes hero-photo-enter{from{transform:scale(1.045)}to{transform:scale(1)}}
-  @keyframes hero-copy-enter{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes hero-photo-enter{from{transform:scale(1.12)}to{transform:scale(1)}}
+  @keyframes hero-copy-enter{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:translateY(0)}}
   @keyframes scroll-cue{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(.55);opacity:.5}}
   @keyframes answer-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 }
