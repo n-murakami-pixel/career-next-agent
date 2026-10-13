@@ -10,7 +10,7 @@
     const position = root.querySelector('.hero-position');
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const ready = new Set();
-    let current = 0, timer = null, paused = motion.matches, hovered = false, inView = true;
+    let current = 0, timer = null, paused = motion.matches, inView = true;
     let animations = [];
     function clearTimer() {
       if (timer !== null) window.clearTimeout(timer);
@@ -33,7 +33,7 @@
     }
     function schedule() {
       clearTimer();
-      if (paused || motion.matches || hovered || !inView || document.visibilityState !== 'visible' || ready.size < 2) return;
+      if (paused || motion.matches || !inView || document.visibilityState !== 'visible' || ready.size < 2) return;
       timer = window.setTimeout(() => { timer = null; move(1, false); }, 5000);
     }
     function show(index, direction = 1, animate = true) {
@@ -81,8 +81,8 @@
       if (event.target === play) return;
       paused = true; settle(); update(); schedule();
     });
-    root.addEventListener('mouseenter', () => { hovered = true; schedule(); });
-    root.addEventListener('mouseleave', () => { hovered = false; schedule(); });
+    // Pointer presence alone must not silently stop rotation. Use the explicit
+    // rotation button or keyboard focus, which also updates the button label.
     document.addEventListener('visibilitychange', () => { settle(); schedule(); });
     function respectMotion() { if (motion.matches) { paused = true; settle(); } update(); schedule(); }
     if (motion.addEventListener) motion.addEventListener('change', respectMotion);
