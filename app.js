@@ -102,7 +102,8 @@ const floating = document.querySelector('.floating-cta');
 const contact = document.querySelector('#contact');
 function toggleFloat() {
   const box = contact.getBoundingClientRect();
-  const show = window.scrollY > 700 && !(box.top < innerHeight && box.bottom > 0) && !document.querySelector('#contact:focus-within');
+  const footerBox = document.querySelector('footer').getBoundingClientRect();
+  const show = footerBox.top >= innerHeight && window.scrollY > 700 && !(box.top < innerHeight && box.bottom > 0) && !document.querySelector('#contact:focus-within');
   floating.classList.toggle('visible', show);
   floating.setAttribute('aria-hidden', String(!show)); floating.tabIndex = show ? 0 : -1;
 }
