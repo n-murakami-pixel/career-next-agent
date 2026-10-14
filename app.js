@@ -1,22 +1,46 @@
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+// Keep native details/summary semantics; animate the measured height reversibly.
+document.querySelectorAll('.faq-list details').forEach(details => {
+  const summary = details.querySelector('summary');
+  const answer = document.createElement('div');
+  answer.className = 'faq-answer';
+  while (summary.nextSibling) answer.append(summary.nextSibling);
+  details.append(answer);
+  let expanded = details.open, animation = null, fade = null;
+  function finish() {
+    if (animation) { animation.onfinish = null; animation.cancel(); }
+    if (fade) fade.cancel();
+    animation = fade = null;
+    details.open = expanded;
+    details.style.height = ''; details.style.overflow = '';
+    summary.setAttribute('aria-expanded', String(expanded));
+  }
+  function change(next) {
+    const height = details.getBoundingClientRect().height;
+    const opacity = details.open ? getComputedStyle(answer).opacity : '0';
+    expanded = next;
+    if (animation) { animation.onfinish = null; animation.cancel(); }
+    if (fade) fade.cancel();
+    if (motionPreference.matches || !details.animate) { finish(); return; }
+    details.open = true;
+    details.style.height = ''; details.style.overflow = 'hidden';
+    const target = expanded ? details.getBoundingClientRect().height : summary.getBoundingClientRect().height + parseFloat(getComputedStyle(details).borderTopWidth);
+    summary.setAttribute('aria-expanded', String(expanded));
+    const options = {duration:500, easing:'cubic-bezier(.25,.1,.25,1)'};
+    animation = details.animate([{height:height+'px'}, {height:target+'px'}], options);
+    fade = answer.animate([{opacity}, {opacity:expanded ? 1 : 0}], options);
+    animation.onfinish = finish;
+  }
+  summary.addEventListener('click', event => { event.preventDefault(); change(!expanded); });
+  window.addEventListener('resize', () => { if (animation) change(expanded); });
+  motionPreference.addEventListener('change', () => { if (motionPreference.matches) finish(); });
+  summary.setAttribute('aria-expanded', String(expanded));
+});
 const content = window.SITE_CONTENT || {};
 document.querySelectorAll('[data-copy]').forEach(element => {
   const value = content[element.dataset.copy];
   if (typeof value === 'string' && value.trim()) element.textContent = value;
 });
-// Only verified HTTPS social URLs become links; missing URLs remain plain preparation notices.
-for (const name of ['instagram', 'x']) {
-  const value = content.social?.[name];
-  try {
-    if (!value) continue;
-    const url = new URL(value);
-    const allowed = name === 'instagram' ? ['instagram.com', 'www.instagram.com'] : ['x.com', 'www.x.com', 'twitter.com', 'www.twitter.com'];
-    if (url.protocol !== 'https:' || !allowed.includes(url.hostname) || url.username || url.password) continue;
-    const link = document.querySelector(`[data-social-link="${name}"]`);
-    link.href = url.href; link.hidden = false;
-    document.querySelector(`[data-social-status="${name}"]`).hidden = true;
-  } catch { /* Invalid/unset URLs never become fake links. */ }
-}
 const menu = document.querySelector('.menu-button');
 const nav = document.querySelector('.header nav');
 nav.id = 'mobile-navigation';

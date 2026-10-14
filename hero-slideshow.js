@@ -6,7 +6,7 @@
     const controls = root.querySelector('.hero-controls');
     const prev = root.querySelector('.hero-prev');
     const next = root.querySelector('.hero-next');
-    const play = root.querySelector('.hero-play');
+    const play = root.querySelector('.hero-motion-toggle');
     const position = root.querySelector('.hero-position');
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const ready = new Set();
@@ -27,8 +27,8 @@
       position.textContent = available.length ? `${available.indexOf(current) + 1} / ${available.length}` : '写真を読み込み中';
       position.setAttribute('aria-live', paused || motion.matches ? 'polite' : 'off');
       play.disabled = motion.matches;
-      play.textContent = motion.matches ? '自動切替オフ' : paused ? '再生' : '一時停止';
-      play.setAttribute('aria-label', motion.matches ? '動きを減らす設定のため自動切替はオフ' : paused ? '写真の自動切替を再開' : '写真の自動切替を一時停止');
+      play.checked = paused || motion.matches;
+      play.setAttribute('aria-label', motion.matches ? '写真の自動切替はオフ（動きを減らす設定）' : '写真の自動切替を止める');
       available.forEach((i, n) => slides[i].setAttribute('aria-label', `${n + 1} / ${available.length}`));
     }
     function schedule() {
@@ -70,9 +70,9 @@
     }
     prev.addEventListener('click', () => move(-1, true));
     next.addEventListener('click', () => move(1, true));
-    play.addEventListener('click', () => {
+    play.addEventListener('change', () => {
       if (motion.matches) return;
-      paused = !paused;
+      paused = play.checked;
       if (paused) settle();
       update(); schedule();
     });
