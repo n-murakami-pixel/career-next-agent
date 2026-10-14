@@ -43,11 +43,61 @@ document.querySelectorAll('[data-copy]').forEach(element => {
 });
 const menu = document.querySelector('.menu-button');
 const nav = document.querySelector('.header nav');
-nav.id = 'mobile-navigation';
-function closeMenu() { nav.classList.remove('open'); menu.setAttribute('aria-expanded', 'false'); menu.setAttribute('aria-label', 'メニューを開く'); }
-menu.addEventListener('click', () => { const open = menu.getAttribute('aria-expanded') !== 'true'; nav.classList.toggle('open', open); menu.setAttribute('aria-expanded', String(open)); menu.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く'); });
-nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('open')) { closeMenu(); menu.focus(); } });
+const compactNav = window.matchMedia('(max-width: 900px)');
+const backdrop = document.querySelector('.menu-backdrop');
+const navLinks = [...nav.querySelectorAll('a')];
+const outsideMenu = [...document.querySelectorAll('main,footer,.floating-cta,.header>.brand,.skip')];
+let menuOpen = false;
+function syncMenu() {
+  document.body.classList.toggle('nav-open', menuOpen);
+  nav.classList.toggle('open', menuOpen);
+  nav.inert = !menuOpen;
+  nav.setAttribute('aria-hidden', String(!menuOpen));
+  menu.setAttribute('aria-expanded', String(menuOpen));
+  menu.setAttribute('aria-label', menuOpen ? 'メニューを閉じる' : 'メニューを開く');
+  const modal = menuOpen && compactNav.matches;
+  backdrop.hidden = !modal;
+  document.body.classList.toggle('menu-locked', modal);
+  outsideMenu.forEach(e => { e.inert = modal; });
+}
+function closeMenu(restoreFocus = false) {
+  menuOpen = false; syncMenu();
+  if (restoreFocus) menu.focus();
+}
+menu.addEventListener('click', () => { menuOpen = !menuOpen; syncMenu(); if (menuOpen) requestAnimationFrame(() => { if (menuOpen) navLinks[0].focus(); }); });
+backdrop.addEventListener('click', () => closeMenu(true));
+navLinks.forEach(link => link.addEventListener('click', event => {
+  event.preventDefault();
+  const target = document.querySelector(link.hash);
+  closeMenu();
+  target.setAttribute('tabindex', '-1');
+  target.focus({preventScroll:true});
+  target.scrollIntoView({behavior:motionPreference.matches ? 'instant' : 'smooth'});
+  history.replaceState(null, '', link.hash);
+}));
+document.addEventListener('keydown', event => {
+  if (!menuOpen) return;
+  if (event.key === 'Escape') { event.preventDefault(); closeMenu(true); }
+  if (event.key === 'Tab' && compactNav.matches) {
+    const focusable = [menu, ...navLinks];
+    const current = focusable.indexOf(document.activeElement);
+    event.preventDefault();
+    focusable[(current + (event.shiftKey ? -1 : 1) + focusable.length) % focusable.length].focus();
+  }
+});
+compactNav.addEventListener('change', () => {
+  syncMenu();
+  if (menuOpen && compactNav.matches) navLinks[0].focus();
+});
+function markSection() {
+  let active = null;
+  navLinks.forEach(link => { if (document.querySelector(link.hash).getBoundingClientRect().top <= innerHeight * .4) active = link; });
+  navLinks.forEach(link => { if (link === active) link.setAttribute('aria-current','location'); else link.removeAttribute('aria-current'); });
+}
+window.addEventListener('scroll', markSection, {passive:true});
+window.addEventListener('resize', markSection, {passive:true});
+syncMenu(); markSection();
+
 const floating = document.querySelector('.floating-cta');
 const contact = document.querySelector('#contact');
 function toggleFloat() {
